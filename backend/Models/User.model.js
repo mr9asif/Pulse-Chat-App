@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
   },
   image: {
     type: String, // URL or path to the profile image
-    default: 'default-profile-image-url', // Optional default image
+    default: 'https://i.postimg.cc/5Nr2pbKD/no-dp-for-whatsapp-24.webp', // Optional default image
   },
   email: {
     type: String,
