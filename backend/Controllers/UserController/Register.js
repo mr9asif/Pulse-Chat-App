@@ -1,5 +1,6 @@
 const { genSalt, hash } = require("bcryptjs");
 const User = require("../../Models/User.model");
+const generateToken = require("../../Utils/JwtToken");
 
 
 const RegisterUser =async (req, res)=>{
@@ -7,7 +8,7 @@ const RegisterUser =async (req, res)=>{
     const {fullname, username, email, password}= req.body;
 
     // check fields
-    if(!fullname, !username, !email, !password){
+    if(!fullname || !username || !email || !password){
         res.status(400).json({message:"All fiels are requred"});
     }
 
@@ -24,10 +25,20 @@ const RegisterUser =async (req, res)=>{
     const newUser = new User({
         fullname, username, email, password:hashPass
     });
-
+      
     // save user in database
     const user =await newUser.save();
     
+    // jwt token generate
+     const token = generateToken(user._id);
+
+      res.cookie('token', token, {
+        httpOnly: true,  // Makes the cookie accessible only by the server
+        secure: process.env.NODE_ENV === 'production',  // Use secure cookies in production
+        maxAge: 7 * 24 * 60 * 60 * 1000,  // 7 days expiration
+      })
+
+
 
     // response
     res.status(201).send({messge:"Register Successfully",
@@ -39,7 +50,8 @@ const RegisterUser =async (req, res)=>{
             password:user.password,
             bio:user.bio,
             image:user.image
-        }
+        },
+        token:token
     } 
         
     )
