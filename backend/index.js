@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require("cors");
+const ConnectDb = require('./db/ConnectDb');
 require('dotenv').config();
 const port =process.env.PORT || 4001;
 console.log(process.env.PORT)
@@ -13,4 +14,5 @@ app.get('/', (req,res)=>{
 
 app.listen(port, ()=>{
     console.log(`server running on ${port}`)
+    ConnectDb();
 })
