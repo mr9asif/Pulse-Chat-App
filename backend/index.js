@@ -2,14 +2,17 @@ const express = require('express');
 const cors = require("cors");
 const ConnectDb = require('./db/ConnectDb');
 require('dotenv').config();
-const port =process.env.PORT || 4001;
-console.log(process.env.PORT)
+const UserRoutes = require("./Routes/UserRoutes");
 
+
+
+const port =process.env.PORT || 4001;
 const app = express();
 
-app.get('/', (req,res)=>{
-    res.send({message:"works "})
-})
+// middleware
+app.use(express.json());
+
+app.use('/api/user', UserRoutes);
 
 
 app.listen(port, ()=>{
