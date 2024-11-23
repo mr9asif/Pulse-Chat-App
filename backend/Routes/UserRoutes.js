@@ -1,6 +1,7 @@
 
 const express = require("express");
 const RegisterUser = require("../Controllers/UserController/Register");
+const LoginUser = require("../Controllers/UserController/LoginUser");
 
 const router = express.Router();
 
@@ -8,7 +9,7 @@ const router = express.Router();
 router.post('/register', RegisterUser);
 
 // user login
-// router.post("/login", LoginUser);
+router.post("/login", LoginUser);
 
 
 
