@@ -3,8 +3,11 @@ const express = require("express");
 const RegisterUser = require("../Controllers/UserController/Register");
 const LoginUser = require("../Controllers/UserController/LoginUser");
 const authenticateToken = require("../Middleware/authenticateToken");
-const getUserProfile = require('../Controllers/UserController/getUserProfile')
-const updateUserProfile = require('../Controllers/UserController/updateProfile')
+
+const updateUserProfile = require('../Controllers/UserController/updateProfile');
+const forgetPassword = require("../Controllers/UserController/forgetPassword");
+const resetPassword = require("../Controllers/UserController/resetPassword");
+const getResetPasswordPage = require("../Controllers/UserController/getResetPasswordPage");
 
 const router = express.Router();
 
@@ -21,9 +24,15 @@ router.post("/login", LoginUser);
 
 // // Update user profile (protected route)
 router.put('/:id', authenticateToken, updateUserProfile);
-// router.get('/:id',authenticateToken,  updateUserProfile)
+
 
 // // Change password (protected route)
+router.post('/forgetPass', forgetPassword)
+
+// get resetpassword page
+router.get('/reset-password/:token', getResetPasswordPage)
+
+router.put('/reset-password/:token', resetPassword)
 // router.put('/:id/change-password', authenticateToken, changePassword);
 
 // // Delete user account (protected route)

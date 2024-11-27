@@ -40,6 +40,8 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: true, // Status to track if user is active or deactivated
   },
+  resetPasswordToken: String,
+  resetPasswordExpiry: Date,
   createdAt: {
     type: Date,
     default: Date.now,
