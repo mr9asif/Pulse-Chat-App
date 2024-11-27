@@ -22,7 +22,7 @@ app.use(cors({
 app.use('/api/user', UserRoutes);
 
 // message routes
-// app.use("/api/msg", MessageRoutes)
+app.use("/api/msg", MessageRoutes)
 
 
 app.listen(port, ()=>{

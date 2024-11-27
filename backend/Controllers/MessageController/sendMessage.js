@@ -1,25 +1,23 @@
-const Message = require('../../Models/messages.model');
-const sendMessage =async (req, res)=>{
-   try {
-    const {sender, receiver, content}= req.body;
-    let mediaURL =null;
-   if(req.file){
-    mediaURL = `/upload/files/${req.file.filename}`
+const getUserProfile = require("../UserController/getUserProfile");
 
-   }
-   const message = new  Message({
-     sender, receiver, content, media:mediaURL
-   });
+const sendMessage = async(req, res)=>{
+    const receiverId = req.params;
+    const {user} = req;
+    const senderId = user.id;
+    console.log(senderId, receiverId);
 
-   await message.save();
+    // const {text, reaction, media} = req.body;
 
-   res.status(201).send({message:"message send successfulle", data:message})
-   } catch (error) {
-    res.status(500).send({message:"server error"});
-    console.log(error)
-   }
+    // if(!senderId &&  !receiverId){
+    //     res.json({message:"sender or reciver not found"})
+    // }
+
+    // if(!text || !reaction || !media){
+    //     res.status(400).json({message:"Content not found to send"})
+    // }
+
+
 
 }
-
 
 module.exports = sendMessage;
