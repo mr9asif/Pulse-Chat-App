@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const ConnectDb = require('./db/ConnectDb');
 require('dotenv').config();
 const UserRoutes = require("./Routes/UserRoutes");
+const MessageRoutes = require('./Routes/MessageRoutes')
 
 
 
@@ -17,8 +18,11 @@ app.use(cors({
     origin:["http://localhost:5173/"],
 }))
 
-
+// user routes
 app.use('/api/user', UserRoutes);
+
+// message routes
+// app.use("/api/msg", MessageRoutes)
 
 
 app.listen(port, ()=>{

@@ -2,6 +2,9 @@
 const express = require("express");
 const RegisterUser = require("../Controllers/UserController/Register");
 const LoginUser = require("../Controllers/UserController/LoginUser");
+const authenticateToken = require("../Middleware/authenticateToken");
+const getUserProfile = require('../Controllers/UserController/getUserProfile')
+
 
 const router = express.Router();
 
@@ -14,7 +17,7 @@ router.post("/login", LoginUser);
 
 
 // Get user profile (protected route)
-// router.get('/:id', authenticateToken, getUserProfile);
+router.get('/:id', authenticateToken, getUserProfile);
 
 // // Update user profile (protected route)
 // router.put('/:id', authenticateToken, updateUserProfile);

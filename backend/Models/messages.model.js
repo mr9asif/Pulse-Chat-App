@@ -45,6 +45,12 @@ const messageSchema = new mongoose.Schema({
     type: Boolean,
     default: false, // Track if the message has been deleted
   },
+  replyTo: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: 'Message',
+  required: false, // Reference to the original message being replied to
+},
+
 });
 
 module.exports = mongoose.model('Message', messageSchema);
