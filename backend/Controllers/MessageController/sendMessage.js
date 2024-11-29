@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 
 const storage=multer.diskStorage({
     destination:'./upload',
-    filename:(req,file, cd)=>{
+    filename:(req,file, cb)=>{
         cb(null,`${Date.now()}-${file.originalname}`)
     }
 });

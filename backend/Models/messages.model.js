@@ -18,7 +18,7 @@ const messageSchema = new mongoose.Schema({
   },
   content: {
     type: String,
-    required: true, // Text content of the message
+    required: false, // Text content of the message
   },
   media: {
     type: String, // URL to image/video (optional)
