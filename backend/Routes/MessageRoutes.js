@@ -1,11 +1,11 @@
 const express = require('express');
-const sendMessage = require('../Controllers/MessageController/sendMessage');
+const {sendMessage,upload} = require('../Controllers/MessageController/sendMessage');
 const authenticateToken = require('../Middleware/authenticateToken');
 
 const router = express.Router();
 
 // send message one to one
-router.get('/:id',authenticateToken ,sendMessage);
+router.post('/:id',authenticateToken ,upload,sendMessage);
 
 
 
