@@ -1,4 +1,5 @@
-
-.rg{
-    background-image: "./assets/animations/register.json" ;
+.rg {
+    background-image: url("./assets/Images/bg3.jpg.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
 }

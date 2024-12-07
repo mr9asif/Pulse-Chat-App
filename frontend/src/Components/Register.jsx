@@ -97,7 +97,8 @@ const Register = () => {
       };
 
     return (
-        <div className='pt-32 max-w-6xl mx-auto flex justify-between items-center gap-2 rg'>
+        <div className='rg '>
+        <div className='pt-32 max-w-6xl mx-auto flex justify-between items-center gap-2 '>
             
             
 
@@ -212,6 +213,8 @@ const Register = () => {
                  <Toaster />
                </div>
              </div>
+        </div>
+        
        
     );
 };
