@@ -3,7 +3,7 @@ import logo from '../assets/Images/icons8-pulse-32.png';
 
 const Navbar = () => {
     return (
-        <nav className="h-24 bg-blue-950 shadow-md mb-5 flex px-5 justify-between items-center">
+        <nav className="h-24 fixed w-full z-30 bg-blue-950 shadow-md mb-5 flex px-5 justify-between items-center opacity-95">
             {/* Logo Section */}
             <div className="flex items-center justify-center gap-4 cursor-pointer hover:scale-105 hover:animate-pulse">
                 <img width={60} className="" src={logo} alt="logo" />
@@ -48,10 +48,10 @@ const Navbar = () => {
 
             {/* Login and Register Links */}
             <div className="flex items-center justify-center gap-4">
-                <Link className="btn text-primary" to="/login">
+                <Link  className="btn text-primary" to="/login">
                     Login
                 </Link>
-                <Link className="btn text-primary" to="/register">
+                <Link  className="btn text-primary" to="/register">
                     Register
                 </Link>
             </div>
