@@ -2,6 +2,9 @@ import { Link, NavLink } from 'react-router-dom';
 import logo from '../assets/Images/icons8-pulse-32.png';
 
 const Navbar = () => {
+    const base = import.meta.env.VITE_BASEURL;
+    console.log(import.meta.env.FUCK)
+console.log("base", base)
     return (
         <nav className="h-24 fixed w-full z-30 bg-blue-950 shadow-md mb-5 flex px-5 justify-between items-center opacity-95">
             {/* Logo Section */}

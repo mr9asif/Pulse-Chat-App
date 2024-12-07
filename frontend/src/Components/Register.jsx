@@ -1,10 +1,10 @@
-// import Lottie from 'lottie-react';
+import Lottie from 'lottie-react';
 
 // import { CgProfile } from "react-icons/cg";
 import { FaUserEdit } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { TbPasswordMobilePhone } from "react-icons/tb";
-// import register from '../assets/animations/register.json';
+import registerAn from '../assets/animations/register.json';
 
 import axios from 'axios';
 import { useState } from 'react';
@@ -22,7 +22,8 @@ const Register = () => {
    
     const [load, setLoad]= useState(true);
       const navigate = useNavigate();
-      const base= import.meta.env.BASEURL;
+      const base= import.meta.env.VITE_BASEURL;
+      console.log(base)
 
       const postDetails = (pic) => {
         setLoad(true);
@@ -72,6 +73,7 @@ const Register = () => {
         };
         console.log(formData)
     
+    
         try {
           const res = await axios.post(`${base}/user/register`, formData);
           console.log("Registration successful", res.data);
@@ -95,56 +97,17 @@ const Register = () => {
       };
 
     return (
-        <div className='pt-32 max-w-6xl mx-auto flex justify-between items-center gap-2'>
-             { /*<div>
-               <Lottie className='w-[300px]' animationData={register}></Lottie>
-             </div>
-             <div>
-                 <form action="">
-                        <label htmlFor="fullname">
-                            <h1 className='text-xl font-medium mb-2'>Full Name</h1>
-                            <div className='flex items-center rounded-md border default-border-none px-4 '>
-                            <FaUserEdit />
-                            <input type="text" placeholder='full name' className='p-2 text-[13px]outline-none focus:outline-none text-gray-400' />
-                            </div>
-                        </label>
-                        <label htmlFor="fullname">
-                            <h1 className='text-xl font-medium mb-2'>Username</h1>
-                            <div className='flex items-center rounded-md border default-border-none px-4 '>
-                            <FaUserEdit />
-                            <input type="text" placeholder='username' className='p-2 text-[13px]outline-none focus:outline-none text-gray-400' />
-                            </div>
-                        </label>
-                        <label htmlFor="fullname">
-                            <h1 className='text-xl font-medium mb-2'>Email</h1>
-                            <div className='flex items-center rounded-md border default-border-none px-4 '>
-                            <MdEmail />
-
-                            <input type="email" placeholder='email' className='p-2 text-[13px]outline-none focus:outline-none text-gray-400' />
-                            </div>
-                        </label>
-                        <label htmlFor="profile">
-                            <h1 className='text-xl font-medium mb-2'>Profile</h1>
-                            <div className='flex items-center rounded-md border default-border-none px-4 '>
-                            <CgProfile />
-
-                            <input type="email" placeholder='email' className='p-2 text-[13px]outline-none focus:outline-none text-gray-400' />
-                            </div>
-                        </label>
-                        <label htmlFor="password">
-                            <h1 className='text-xl font-medium mb-2'>Password</h1>
-                            <div className='flex items-center rounded-md border default-border-none px-4 '>
-                            <TbPasswordMobilePhone />
-
-                            <input type="password" placeholder='password' className='p-2 text-[13px]outline-none focus:outline-none text-gray-400' />
-                            </div>
-                        </label>
-                 </form>*/}
+        <div className='pt-32 max-w-6xl mx-auto flex justify-between items-center gap-2 rg'>
+            
+            
 
                  <div className='w-full h-screen register flex justify-center items-center'>
                  <div>
+                 <Lottie className='w-[400px]' animationData={registerAn}></Lottie>
+               </div>
+                 {/*<div>
                    <img src="https://i.postimg.cc/MHL3Q2Sf/man-holding-sign-up-form-3d-illustration-download-in-png-blend-fbx-gltf-file-formats-signin-login-u.png" alt="Register Illustration" />
-                 </div>
+                 </div> */}
                  <div className='w-[35%] px-6 rounded-sm p-4 shadow-md bg-[#013650]'>
                    <h1 className='text-center text-3xl text-white font-bold'>Register</h1>
                    <form onSubmit={handleSubmit(onSubmit)}>
