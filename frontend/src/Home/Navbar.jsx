@@ -76,7 +76,7 @@ const Navbar = () => {
             {
              
                     user ? (<>
-                         <img className='rounded-[50%] w-[50px] h-[50px] border' src={user?.image} alt="" />
+                         <img className='rounded-[50%] w-[50px] h-[50px]' src={user?.image} alt="" />
                         <Link onClick={handleLogout} className="btn text-primary" to="/login">LogOut</Link>
                         </>) : (
                         <>
