@@ -1,10 +1,32 @@
-import { Link, NavLink } from 'react-router-dom';
+import axios from 'axios';
+import { useContext } from 'react';
+import toast from 'react-hot-toast';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import logo from '../assets/Images/icons8-pulse-32.png';
+import { UserContext } from '../Utils/AuthContext';
 
 const Navbar = () => {
-    const base = import.meta.env.VITE_BASEURL;
-    console.log(import.meta.env.FUCK)
-console.log("base", base)
+     const {user, setUser} = useContext(UserContext);
+     const navigate = useNavigate();
+     console.log(user)
+     const base = import.meta.env.VITE_BASEURL;
+     const handleLogout = async () => {
+        try {
+            const res = await axios.post(`${base}/user/logout`, {}, { withCredentials: true });
+            if (res.status === 200) {
+                setUser(null);
+                toast.success("Logout Successfully");
+
+                navigate('/login');
+            } else {
+                toast.error("Logout failed. Please try again.");
+            }
+        } catch (error) {
+            console.error("Logout error:", error);
+            toast.error("An error occurred during logout.");
+        }
+    };
+  
     return (
         <nav className="h-24 fixed w-full z-30 bg-blue-950 shadow-md mb-5 flex px-5 justify-between items-center opacity-95">
             {/* Logo Section */}
@@ -51,12 +73,20 @@ console.log("base", base)
 
             {/* Login and Register Links */}
             <div className="flex items-center justify-center gap-4">
-                <Link  className="btn text-primary" to="/login">
-                    Login
-                </Link>
-                <Link  className="btn text-primary" to="/register">
-                    Register
-                </Link>
+            {
+             
+                    user ? (<>
+                         <img className='rounded-[50%] w-[50px] h-[50px] border' src={user?.image} alt="" />
+                        <Link onClick={handleLogout} className="btn text-primary" to="/login">LogOut</Link>
+                        </>) : (
+                        <>
+                            <Link className="btn text-primary" to="/login">Login</Link>
+                            <Link className="btn text-primary" to="/register">Register</Link>
+                        </>
+                    )
+                 
+            }
+            
             </div>
         </nav>
     );

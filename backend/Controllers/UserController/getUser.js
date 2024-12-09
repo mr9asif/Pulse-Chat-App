@@ -4,7 +4,7 @@ const getUser = async(req, res)=>{
     try {
         const token = req.cookies.token;
         if(!token){
-            res.status(401).send({message:"token not find & user not authenticated"});
+            return res.status(401).send({message:"token not find & user not authenticated"});
         }
 
         // varify user
@@ -12,7 +12,7 @@ const getUser = async(req, res)=>{
           const user = await User.findById(decoded.id).select('-password');
 
           if(!user){
-            res.status(403).send({message:"user not found or unauthorize token"});
+           return res.status(403).send({message:"user not found or unauthorize token"});
           }
           
           res.status(201).json({user});

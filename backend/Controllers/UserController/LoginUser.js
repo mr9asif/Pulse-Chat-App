@@ -24,7 +24,7 @@ const LoginUser = async(req, res)=>{
         $or:[{email:emailOrusername}, {username:emailOrusername}]
     })
     if(!user){
-        res.status(400).json({message:"user not found"});
+       return res.status(402).json({message:"user not found"});
     }
 
     // bcrypt pass
@@ -32,7 +32,7 @@ const LoginUser = async(req, res)=>{
     
     // !match
     if(!matchPass){
-        res.status(400).json({message:"Incorrect Password"});
+       return res.status(400).json({message:"Incorrect Password"});
     }
 
     // generate token

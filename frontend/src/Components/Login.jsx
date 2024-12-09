@@ -1,18 +1,20 @@
 import axios from 'axios'; // Make sure to import axios
 import Lottie from 'lottie-react';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa6";
 import { Link, useNavigate } from 'react-router-dom';
 import "../App.css";
 import registerAn from '../assets/animations/register.json';
+import { UserContext } from '../Utils/AuthContext';
 
 const Login = () => {
     const navigate = useNavigate();
     const [pass, setPass]=useState(true);
     const [loading, setLoading]=useState(true);
      const base = import.meta.env.VITE_BASEURL;
+     const {setUser}= useContext(UserContext);
     const handleEye = ()=>{
       setPass(!pass)
     }
@@ -27,9 +29,8 @@ const handleLogin = async (e) => {
   try {
     const res = await axios.post(`${base}/user/login`, user,  { withCredentials: true } );
     console.log('Login successful', res.data);
-   
-      const user2 =JSON.stringify(res.data);
-     localStorage.setItem("user",user2);
+    setUser(res.data.user);
+    console.log(res.data.user)
      toast.success('Successfully Login!');
      setLoading(false)
       navigate('/')
@@ -39,8 +40,8 @@ const handleLogin = async (e) => {
     if (error.response) {
       // Handle specific error responses
       setLoading(false)
-      if (error.response.status === 401) {
-        toast.error('Incorrect email or password!')
+      if (error.response.status === 402) {
+        toast.error('Incorrect email or username!')
         console.log("invalid")
       }if(error.response.status === 400){
         toast.error('Incorrect Password!')
