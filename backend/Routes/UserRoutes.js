@@ -8,6 +8,7 @@ const updateUserProfile = require('../Controllers/UserController/updateProfile')
 const forgetPassword = require("../Controllers/UserController/forgetPassword");
 const resetPassword = require("../Controllers/UserController/resetPassword");
 const getResetPasswordPage = require("../Controllers/UserController/getResetPasswordPage");
+const logout = require("../Controllers/UserController/logout");
 
 const router = express.Router();
 
@@ -34,6 +35,10 @@ router.get('/reset-password/:token', getResetPasswordPage)
 
 router.put('/reset-password/:token', resetPassword)
 // router.put('/:id/change-password', authenticateToken, changePassword);
+
+// logout
+router.post('/logout', logout);
+
 
 // // Delete user account (protected route)
 // router.delete('/:id', authenticateToken, deleteUser);
