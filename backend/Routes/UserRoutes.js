@@ -9,6 +9,7 @@ const forgetPassword = require("../Controllers/UserController/forgetPassword");
 const resetPassword = require("../Controllers/UserController/resetPassword");
 const getResetPasswordPage = require("../Controllers/UserController/getResetPasswordPage");
 const logout = require("../Controllers/UserController/logout");
+const getUser = require("../Controllers/UserController/getUser");
 
 const router = express.Router();
 
@@ -20,8 +21,8 @@ router.post("/login", LoginUser);
 
 
 
-// Get user profile (protected route)
-// router.get('/:id', authenticateToken, getUserProfile);
+// Get user profile 
+router.get('/getUser', authenticateToken, getUser);
 
 // // Update user profile (protected route)
 router.put('/:id', authenticateToken, updateUserProfile);
