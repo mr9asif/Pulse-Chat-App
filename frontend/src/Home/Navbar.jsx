@@ -45,6 +45,16 @@ const Navbar = () => {
                 >
                     Home
                 </NavLink>
+               {
+                user &&  <NavLink
+                to="/messages"
+                className={({ isActive }) =>
+                    `btn ${isActive ? 'text-secondary font-bold' : 'text-primary'}`
+                }
+            >
+                Messages
+            </NavLink>
+               }
                 <NavLink
                     to="/features"
                     className={({ isActive }) =>
