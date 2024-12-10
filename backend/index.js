@@ -4,7 +4,8 @@ const cookieParser = require('cookie-parser');
 const ConnectDb = require('./db/ConnectDb');
 require('dotenv').config();
 const UserRoutes = require("./Routes/UserRoutes");
-const MessageRoutes = require('./Routes/MessageRoutes')
+const MessageRoutes = require('./Routes/MessageRoutes');
+const ReviewsRoutes = require('./Routes/ReviewsRoutes');
 
 
 
@@ -24,6 +25,9 @@ app.use('/api/user', UserRoutes);
 
 // message routes
 app.use("/api/msg", MessageRoutes)
+
+// reviews
+app.use('/api/reviews', ReviewsRoutes)
 
 
 app.listen(port, ()=>{
