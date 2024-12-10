@@ -1,6 +1,7 @@
 
 import AboutUs from "./AboutUs";
 import Banner from "./Banner";
+import Feedback from "./Feedback";
 
 
 const Home = () => {
@@ -9,6 +10,8 @@ const Home = () => {
           <Banner></Banner>
         {/* features aboutus, feedback testimonial , footer */}
         <AboutUs></AboutUs>
+
+        <Feedback></Feedback>
         </div>
     );
 };

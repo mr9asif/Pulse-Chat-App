@@ -13,7 +13,7 @@ const AboutUs = () => {
             <div className='flex flex-col items-start gap-3'>
                   <h1 className='text-[35px] font-mono text-base font-bold'>ABOUT US</h1>
                   <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aperiam, eius? Incidunt soluta deserunt dolores.</p>
-                  <Link to='/about' className='bn '>Read More</Link>
+                  <Link to='/about' className='bn font-mono '>Read More</Link>
             </div>
         </div>
     );
