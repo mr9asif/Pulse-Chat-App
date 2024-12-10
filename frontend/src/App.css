@@ -1,4 +1,9 @@
 .rg {
+    background-image: url("./assets/Images/bg4.jpg.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.ath {
     background-image: url("./assets/Images/bg3.jpg.jpg");
     background-repeat: no-repeat;
     background-size: cover;

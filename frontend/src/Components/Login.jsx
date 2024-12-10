@@ -54,7 +54,7 @@ const handleLogin = async (e) => {
 };
 
     return (
-        <div className='rg'>
+        <div className='ath'>
         <div className='w-full h-screen  flex justify-center items-center register'>
         <div>
                  <Lottie className='w-[400px]' animationData={registerAn}></Lottie>

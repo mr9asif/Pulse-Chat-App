@@ -4,6 +4,6 @@
 
 @layer utilities {
   .btn {
-    @apply  hover:bg-gradient-to-r from-secondary hover:scale-105 font-bold text-xl cursor-pointer border rounded-2xl px-4 py-2 hover:animate-pulse hover:text-white;
+    @apply  hover:bg-gradient-to-r from-secondary hover:scale-105 font-bold text-xl cursor-pointer border rounded-2xl px-4 py-2 hover:animate-pulse hover:text-red-500;
   }
 }

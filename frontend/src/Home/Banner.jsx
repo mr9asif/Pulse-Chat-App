@@ -27,7 +27,7 @@ const Banner = () => {
           />
               
                <h1 className='text-2xl font-bold text-gray-400'>Experience real-time, secure, and seamless communication. </h1>
-            <Link className='text-xl my-3 font-semibold px-4 py-3 border rounded-md bg-base hover:bg-secondary hover:text-white hover:animate-pulse'>Let's Chat</Link>
+            <Link className='text-xl my-3 font-semibold px-4 py-3 border rounded-md bg-secondary hover:bg-red-700 hover:text-white hover:animate-pulse'>Let's Chat</Link>
             </div>
             <div>
             <div className='w-[40%] border-red-700'>

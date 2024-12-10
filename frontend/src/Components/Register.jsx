@@ -97,7 +97,7 @@ const Register = () => {
       };
 
     return (
-        <div className='rg '>
+        <div className='ath '>
         <div className='pt-32 max-w-6xl mx-auto flex justify-between items-center gap-2 '>
             
             
