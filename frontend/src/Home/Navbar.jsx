@@ -8,7 +8,9 @@ import { UserContext } from '../Utils/AuthContext';
 const Navbar = () => {
      const {user, setUser} = useContext(UserContext);
      const navigate = useNavigate();
-     console.log(user)
+    
+    console.log(user?.image)
+      
      const base = import.meta.env.VITE_BASEURL;
      const handleLogout = async () => {
         try {
@@ -86,7 +88,7 @@ const Navbar = () => {
             {
              
                     user ? (<>
-                         <img className='rounded-[50%] w-[50px] h-[50px]' src={user?.image} alt="" />
+                         <img className='rounded-[50%] w-[50px] h-[50px]' src={user?.user?.image || user?.image} alt="" />
                         <Link onClick={handleLogout} className="btn text-primary" to="/login">LogOut</Link>
                         </>) : (
                         <>

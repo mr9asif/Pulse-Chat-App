@@ -15,7 +15,7 @@ const getUser = async(req, res)=>{
            return res.status(403).send({message:"user not found or unauthorize token"});
           }
           
-          res.status(201).json({user});
+          res.status(201).json(user);
 
     } catch (error) {
         res.send(error);
