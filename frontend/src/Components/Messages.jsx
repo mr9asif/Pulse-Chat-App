@@ -8,8 +8,9 @@ const Messages = () => {
     return (
         <div>
             {/* Left side */}
-            <div className='w-[40%] bg-secondary h-[100vh]'>
+            <div className='w-[35%] bg-secondary h-[100vh]'>
                  <div className='flex items-center justify-between px-6 py-3'>
+                 {/* top bar*/}
                       <div className='flex items-center justify-center gap-3'>
                       <div className="flex items-center justify-center gap-4 cursor-pointer hover:scale-105 hover:animate-pulse">
                       <img width={30} className="" src={logo} alt="logo" />
@@ -23,6 +24,14 @@ const Messages = () => {
                       <TbSquareToggleHorizontal />
                        </div>
                  </div>
+
+                 {/* search bar*/}
+                  <form action="">
+                      <label htmlFor="">
+                           <input type="text" placeholder="Search Users" />
+                           <input type="submit"  />
+                      </label>
+                  </form>
             </div>
             <div className='w-[60%]'>
             </div>
