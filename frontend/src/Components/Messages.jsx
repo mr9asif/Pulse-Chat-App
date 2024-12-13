@@ -27,14 +27,22 @@ const Messages = () => {
                  </div>
 
                  {/* search bar*/}
-                   <div className="w-full my-4">
-                   <form className="w-full" action="">
-                   <label className="border-red-500 rounded-md" htmlFor="">
-                        <input type="text" placeholder="Search Users" className="outline-none" />
-                        <input type="submit"  />
-                   </label>
-               </form>
-                   </div>
+                 <div className="w-full flex items-center my-4">
+                 <form className="w-full border-t-2 border-b-2 border-white rounded-md" action="">
+                     <label className="flex items-center w-full" htmlFor="">
+                         <input 
+                             type="text" 
+                             placeholder="Search Users" 
+                             className="outline-none py-2 px-2 w-[75%] border-none box-border h-full"
+                         />
+                         <input 
+                             className="w-[25%] h-full text-white font-mono px-2 py-2 bg-secondary hover:bg-base cursor-pointer box-border"
+                             type="submit"
+                         />
+                     </label>
+                 </form>
+             </div>
+             
             </div>
             <div className='w-[60%]'>
             </div>
