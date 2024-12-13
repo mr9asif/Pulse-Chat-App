@@ -9,29 +9,32 @@ const Messages = () => {
         <div>
             {/* Left side */}
             <div className='w-[35%] bg-secondary h-[100vh]'>
-                 <div className='flex items-center justify-between px-6 py-3'>
-                 {/* top bar*/}
-                      <div className='flex items-center justify-center gap-3'>
+            {/* top bar*/}
+                 <div className='flex items-center justify-between px-6 py-6 border-b-2 mb-6'>
+                      <div className='flex items-center justify-center gap-3 '>
                       <div className="flex items-center justify-center gap-4 cursor-pointer hover:scale-105 hover:animate-pulse">
                       <img width={30} className="" src={logo} alt="logo" />
                       <h1 className="text-[#ED0049] text-2xl font-bold">Pulse</h1>
                        </div>
-                       <Link className='text-xl text-white cursor-pointer'  title='Theme' to='/'><FaArrowLeft /></Link>
+                       <Link className='text-xl text-white cursor-pointer'  to='/'><FaArrowLeft /></Link>
                        
                       </div>
 
-                      <div className='text-2xl text-white cursor-pointer'>
+                      <div  title='Theme' className='text-2xl text-white cursor-pointer'>
                       <TbSquareToggleHorizontal />
                        </div>
+                     
                  </div>
 
                  {/* search bar*/}
-                  <form action="">
-                      <label htmlFor="">
-                           <input type="text" placeholder="Search Users" />
-                           <input type="submit"  />
-                      </label>
-                  </form>
+                   <div className="w-full my-4">
+                   <form className="w-full" action="">
+                   <label className="border-red-500 rounded-md" htmlFor="">
+                        <input type="text" placeholder="Search Users" className="outline-none" />
+                        <input type="submit"  />
+                   </label>
+               </form>
+                   </div>
             </div>
             <div className='w-[60%]'>
             </div>

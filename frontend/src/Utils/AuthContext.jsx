@@ -5,6 +5,7 @@ export const UserContext = createContext();
 
 const AuthContext = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [loading, setLoading]= useState(true);
     const base = import.meta.env.VITE_BASEURL;
 
     useEffect(() => {
@@ -12,9 +13,11 @@ const AuthContext = ({ children }) => {
             try {
                 const res = await axios.get(`${base}/user/getUser`, { withCredentials: true });
                 setUser(res.data); // Assuming your API returns user data in `res.data`
+                setLoading(false);
             } catch (error) {
                 console.error("Error fetching user:", error);
                 setUser(null); // Clear user if API fails
+                setLoading(false);
             }
         };
 
@@ -24,6 +27,7 @@ const AuthContext = ({ children }) => {
     const info = {
         user,
         setUser,
+        loading
     };
 
     return (
