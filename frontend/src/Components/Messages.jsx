@@ -88,7 +88,17 @@ const Messages = () => {
             </div>
 
             {/* Right side */}
-            <div className="w-[60%]"></div>
+            <div className="w-[70%] bg-green-600">
+             {/* top */}
+             <div className="flex items-center w-full justify-start gap-3 px-8 bg-gray-100 h-[81px]">
+                <img className="w-[50px] h-[50px] rounded-[50%]" src="https://media.istockphoto.com/id/1437816897/photo/business-woman-manager-or-human-resources-portrait-for-career-success-company-we-are-hiring.jpg?s=612x612&w=0&k=20&c=tyLvtzutRh22j9GqSGI33Z4HpIwv9vL_MZw_xOE19NQ=" alt="" />
+                <div className="flex flex-col items-start justify-center gap-0">
+                   <h1 className="text-2xl font-mono font-bold text-red-500">Name</h1>
+                   <p className="text-[13px] text-gray-400 font-mono">Offline</p>
+                </div>
+             </div>
+            
+            </div>
         </div>
     );
 };
