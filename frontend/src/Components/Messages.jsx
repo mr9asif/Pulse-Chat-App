@@ -3,6 +3,8 @@ import { FaArrowLeft } from "react-icons/fa";
 import { TbSquareToggleHorizontal } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import logo from "../assets/Images/icons8-pulse-32.png";
+import Chats from "./Chats";
+import Groups from "./Groups";
 
 const Messages = () => {
     // State to track the active tab
@@ -80,8 +82,8 @@ const Messages = () => {
 
                 {/* Content for the active tab */}
                 <div className="p-4">
-                    {activeTab === "Chat" && <div className="bg-white text-red-400">Chat Content</div>}
-                    {activeTab === "Group" && <div className="bg-white text-red-400">Group Content</div>}
+                    {activeTab === "Chat" && <Chats></Chats>}
+                    {activeTab === "Group" && <Groups></Groups>}
                 </div>
             </div>
 
