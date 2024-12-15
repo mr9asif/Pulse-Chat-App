@@ -8,6 +8,7 @@ import { UserContext } from '../Utils/AuthContext';
 const Navbar = () => {
      const {user, setUser} = useContext(UserContext);
      const navigate = useNavigate();
+     console.log(user)
     
     console.log(user?.image)
       
