@@ -4,8 +4,12 @@ const authenticateToken = require('../Middleware/authenticateToken');
 const sendReaction = require('../Controllers/MessageController/sendReaction');
 const editMessage = require('../Controllers/MessageController/editMessage');
 const deleteMessage = require('../Controllers/MessageController/deleteMessage');
+const getChats = require('../Controllers/MessageController/getChats');
 
 const router = express.Router();
+
+// get all chat users
+router.get('/getchats', authenticateToken, getChats)
 
 // send message one to one
 router.post('/:id',authenticateToken ,upload,sendMessage);

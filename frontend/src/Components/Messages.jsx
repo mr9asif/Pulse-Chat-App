@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { TbSquareToggleHorizontal } from "react-icons/tb";
@@ -6,15 +7,31 @@ import logo from "../assets/Images/icons8-pulse-32.png";
 import Chats from "./Chats";
 import ChatsArea from "./ChatsArea";
 import Groups from "./Groups";
-
 const Messages = () => {
     // State to track the active tab
     const [activeTab, setActiveTab] = useState("Chat");
+    const base = import.meta.env.VITE_BASEURL;
 
     // Function to handle tab switching
     const handleTabClick = (tab) => {
         setActiveTab(tab);
     };
+
+    // user search
+    const handleSearch= async(e)=>{
+        e.preventDefault();
+        const search = e.target.search.value;
+        console.log("search", search)
+        console.log(base)
+         
+        try {
+            const res = await axios.get(`${base}/user/searchUsers?search=${search}`, {withCredentials:true});
+            console.log(res.data); // Log the actual response data
+        } catch (error) {
+            console.error(error); // Handle any errors
+        }
+
+    }
 
     return (
         <div className="flex">
@@ -39,13 +56,14 @@ const Messages = () => {
 
                 {/* Search bar */}
                 <div className="w-full flex items-center my-4 h-[30px]">
-                    <form
+                    <form onSubmit={handleSearch}
                         className="w-full border-t-2 border-b-2 border-white rounded-md"
                         action=""
                     >
                         <label className="flex items-center w-full bg-white" htmlFor="">
                             <input
                                 type="text"
+                                name="search"
                                 placeholder="Search Users"
                                 className="outline-none bg-none font-mono py-2 px-2 w-[75%] border-none box-border h-full"
                             />
@@ -100,7 +118,7 @@ const Messages = () => {
              </div>
 
              {/* chats area */}
-             <ChatsArea className="h-[calc(100vh-180px)]"></ChatsArea>
+             <ChatsArea className=" "></ChatsArea>
             
             </div>
         </div>

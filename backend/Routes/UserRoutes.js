@@ -10,6 +10,7 @@ const resetPassword = require("../Controllers/UserController/resetPassword");
 const getResetPasswordPage = require("../Controllers/UserController/getResetPasswordPage");
 const logout = require("../Controllers/UserController/logout");
 const getUser = require("../Controllers/UserController/getUser");
+const getSearchUsers = require("../Controllers/UserController/getSearchUsers");
 
 const router = express.Router();
 
@@ -36,6 +37,10 @@ router.get('/reset-password/:token', getResetPasswordPage)
 
 router.put('/reset-password/:token', resetPassword)
 // router.put('/:id/change-password', authenticateToken, changePassword);
+
+// searchUser
+router.get('/searchUsers', authenticateToken,  getSearchUsers)
+
 
 // logout
 router.post('/logout', logout);
