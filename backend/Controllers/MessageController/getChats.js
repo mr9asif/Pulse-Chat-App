@@ -21,7 +21,7 @@ const getChats = async (req, res) => {
 
         // Step 2: Query User collection
         const users = await User.find({ _id: { $in: uniqueReceiverIds } })
-            .select('fullName profileImage username') // Fetch only necessary fields
+          
             .lean(); // Return plain JS objects for easier manipulation
 
         // Step 3: Return user details
