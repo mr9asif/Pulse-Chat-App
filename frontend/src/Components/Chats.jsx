@@ -1,5 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const Chats = () => {
   const [chats, setChats] = useState([]);
@@ -22,7 +24,7 @@ const Chats = () => {
     chatMsgs();
   }, [base]);
   if(loading){
-    return <div>loading</div>
+    return <Skeleton className='h-[70px] mb-3' count={4} /> // Five-line loading skeleton
  };
 
   console.log(chats); // Check that `chats` is being set correctly
