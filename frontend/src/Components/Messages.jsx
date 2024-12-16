@@ -14,6 +14,7 @@ const Messages = () => {
     const [searchUsers, setSearchUsers] = useState([]);
     const [isSearching, setIsSearching] = useState(false); // Search state
     const [searchTerm, setSearchTerm] = useState(""); // Controlled input state
+    const [chatReceiverId, setChatRecieverId]=useState(null);
 
     const handleTabClick = (tab) => {
         setActiveTab(tab);
@@ -46,6 +47,11 @@ const Messages = () => {
 
         return () => clearTimeout(timeout); // Cleanup debounce
     }, [searchTerm]);
+
+    const handleChat=(id)=>{
+        console.log(id)
+        setChatRecieverId(id);
+       }
 
     return (
         <div className="flex">
@@ -141,7 +147,7 @@ const Messages = () => {
                     ) : (
                         // Show default Chats or Groups when not searching
                         <>
-                            {activeTab === "Chat" && <Chats className="overflow-auto" />}
+                            {activeTab === "Chat" && <Chats handleChat={handleChat} className="overflow-auto" />}
                             {activeTab === "Group" && <Groups className="overflow-auto" />}
                         </>
                     )}
@@ -164,7 +170,7 @@ const Messages = () => {
                 </div>
 
                 {/* Chats area */}
-                <ChatsArea className=""></ChatsArea>
+                <ChatsArea chatReceiverId={chatReceiverId} className=""></ChatsArea>
             </div>
         </div>
     );

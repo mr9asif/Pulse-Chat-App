@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
-const Chats = () => {
+const Chats = ({handleChat}) => {
   const [chats, setChats] = useState([]);
   const [loading, setLoadin]=useState(true);
   const base = import.meta.env.VITE_BASEURL;
@@ -27,13 +27,13 @@ const Chats = () => {
     return <Skeleton className='h-[70px] mb-3' count={4} /> // Five-line loading skeleton
  };
 
-  console.log(chats); // Check that `chats` is being set correctly
+    
 
   return (
     <div className=''>
       {chats?.map((chat) => (
-        <div
-          className='flex items-start mb-2 justify-start pl-10 rounded-md py-2 gap-6 bg-gray-200'
+        <div onClick={()=>handleChat(chat._id)}
+          className='flex items-start mb-2 justify-start cursor-pointer pl-10 rounded-md py-2 gap-6 bg-gray-200'
           key={chat.id} // Always include a unique key prop
         >
           <div className='relative'>
