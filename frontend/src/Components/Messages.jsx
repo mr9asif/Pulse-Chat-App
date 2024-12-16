@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { TbSquareToggleHorizontal } from "react-icons/tb";
 import { Link } from "react-router-dom";
@@ -7,31 +7,45 @@ import logo from "../assets/Images/icons8-pulse-32.png";
 import Chats from "./Chats";
 import ChatsArea from "./ChatsArea";
 import Groups from "./Groups";
+
 const Messages = () => {
-    // State to track the active tab
     const [activeTab, setActiveTab] = useState("Chat");
     const base = import.meta.env.VITE_BASEURL;
+    const [searchUsers, setSearchUsers] = useState([]);
+    const [isSearching, setIsSearching] = useState(false); // Search state
+    const [searchTerm, setSearchTerm] = useState(""); // Controlled input state
 
-    // Function to handle tab switching
     const handleTabClick = (tab) => {
         setActiveTab(tab);
     };
 
-    // user search
-    const handleSearch= async(e)=>{
-        e.preventDefault();
-        const search = e.target.search.value;
-        console.log("search", search)
-        console.log(base)
-         
-        try {
-            const res = await axios.get(`${base}/user/searchUsers?search=${search}`, {withCredentials:true});
-            console.log(res.data); // Log the actual response data
-        } catch (error) {
-            console.error(error); // Handle any errors
-        }
+    // Debounced search
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            if (searchTerm.trim() === "") {
+                setIsSearching(false);
+                setSearchUsers([]);
+                return;
+            }
 
-    }
+            const searchUsers = async () => {
+                setIsSearching(true);
+                try {
+                    const res = await axios.get(
+                        `${base}/user/searchUsers?search=${searchTerm.trim()}`,
+                        { withCredentials: true }
+                    );
+                    setSearchUsers(res.data.users);
+                } catch (error) {
+                    console.error(error);
+                }
+            };
+
+            searchUsers();
+        }, 300); // Adjust debounce delay as needed (300ms in this case)
+
+        return () => clearTimeout(timeout); // Cleanup debounce
+    }, [searchTerm]);
 
     return (
         <div className="flex">
@@ -55,21 +69,16 @@ const Messages = () => {
                 </div>
 
                 {/* Search bar */}
-                <div className="w-full flex items-center my-4 h-[30px]">
-                    <form onSubmit={handleSearch}
-                        className="w-full border-t-2 border-b-2 border-white rounded-md"
-                        action=""
-                    >
-                        <label className="flex items-center w-full bg-white" htmlFor="">
+                <div className="w-[92%] mx-auto flex items-center my-4 h-[30px]">
+                    <form className="w-full border-t-2 border-b-2 border-white rounded-md">
+                        <label className="flex items-center w-full bg-white">
                             <input
                                 type="text"
                                 name="search"
                                 placeholder="Search Users"
-                                className="outline-none bg-none font-mono py-2 px-2 w-[75%] border-none box-border h-full"
-                            />
-                            <input
-                                className="w-[25%] h-full text-white font-mono px-2 py-2 bg-secondary hover:text-base hover:scale-160 cursor-pointer box-border"
-                                type="submit" value="Search"
+                                className="outline-none bg-none font-mono py-2 px-2 w-[100%] border-none box-border h-full"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)} // Trigger search on typing
                             />
                         </label>
                     </form>
@@ -77,10 +86,15 @@ const Messages = () => {
 
                 {/* Tab for user and group */}
                 <div className="w-full h-[40px]">
-                    <div role="tablist" className="tabs tabs-bordered tabs-lg text-white w-full flex font-mono">
+                    <div
+                        role="tablist"
+                        className="tabs tabs-bordered tabs-lg text-white w-full flex font-mono"
+                    >
                         <button
                             role="tab"
-                            className={`${activeTab === "Chat" && "border-b-2 z-10 text-red-500 "} pb-2 tab flex-1 text-center ${
+                            className={`${
+                                activeTab === "Chat" && "border-b-2 z-10 text-red-500 "
+                            } pb-2 tab flex-1 text-center ${
                                 activeTab === "Chat" ? "tab-active" : ""
                             }`}
                             onClick={() => handleTabClick("Chat")}
@@ -89,7 +103,9 @@ const Messages = () => {
                         </button>
                         <button
                             role="tab"
-                            className={`${activeTab === "Group" && "border-b-2 text-red-500"} pb-2 tab flex-1 text-center ${
+                            className={`${
+                                activeTab === "Group" && "border-b-2 text-red-500"
+                            } pb-2 tab flex-1 text-center ${
                                 activeTab === "Group" ? "tab-active" : ""
                             }`}
                             onClick={() => handleTabClick("Group")}
@@ -101,25 +117,54 @@ const Messages = () => {
 
                 {/* Content for the active tab */}
                 <div className="p-4 h-[calc(100vh-200px)] overflow-y-auto">
-                    {activeTab === "Chat" && <Chats className="overflow-auto"></Chats>}
-                    {activeTab === "Group" && <Groups className></Groups>}
+                    {isSearching ? (
+                        // Show search results
+                        searchUsers.length > 0 ? (
+                            <>
+                                {searchUsers.map((user) => (
+                                    <div
+                                        key={user._id}
+                                        className="flex items-center mb-4 p-2 bg-gray-200 rounded-lg"
+                                    >
+                                        <img
+                                            className="w-12 h-12 rounded-full mr-4"
+                                            src={`${user.image}`}
+                                            alt={user.fullname}
+                                        />
+                                        <h1 className="text-lg font-bold">{user.fullname}</h1>
+                                    </div>
+                                ))}
+                            </>
+                        ) : (
+                            <div className="text-center text-gray-500 mt-4">No users found</div>
+                        )
+                    ) : (
+                        // Show default Chats or Groups when not searching
+                        <>
+                            {activeTab === "Chat" && <Chats className="overflow-auto" />}
+                            {activeTab === "Group" && <Groups className="overflow-auto" />}
+                        </>
+                    )}
                 </div>
             </div>
 
             {/* Right side */}
             <div className="w-[70%] h-[100vh] bg-green-600">
-             {/* top */}
-             <div className="flex items-center w-full justify-start gap-3 px-8 bg-gray-100 h-[80px]">
-                <img className="w-[50px] h-[50px] rounded-[50%]" src="https://media.istockphoto.com/id/1437816897/photo/business-woman-manager-or-human-resources-portrait-for-career-success-company-we-are-hiring.jpg?s=612x612&w=0&k=20&c=tyLvtzutRh22j9GqSGI33Z4HpIwv9vL_MZw_xOE19NQ=" alt="" />
-                <div className="flex flex-col items-start justify-center gap-0">
-                   <h1 className="text-2xl font-mono font-bold text-red-500">Name</h1>
-                   <p className="text-[13px] text-gray-400 font-mono">Offline</p>
+                {/* Top */}
+                <div className="flex items-center w-full justify-start gap-3 px-8 bg-gray-100 h-[80px]">
+                    <img
+                        className="w-[50px] h-[50px] rounded-[50%]"
+                        src="https://media.istockphoto.com/id/1437816897/photo/business-woman-manager-or-human-resources-portrait-for-career-success-company-we-are-hiring.jpg?s=612x612&w=0&k=20&c=tyLvtzutRh22j9GqSGI33Z4HpIwv9vL_MZw_xOE19NQ="
+                        alt=""
+                    />
+                    <div className="flex flex-col items-start justify-center gap-0">
+                        <h1 className="text-2xl font-mono font-bold text-red-500">Name</h1>
+                        <p className="text-[13px] text-gray-400 font-mono">Offline</p>
+                    </div>
                 </div>
-             </div>
 
-             {/* chats area */}
-             <ChatsArea className=" "></ChatsArea>
-            
+                {/* Chats area */}
+                <ChatsArea className=""></ChatsArea>
             </div>
         </div>
     );
