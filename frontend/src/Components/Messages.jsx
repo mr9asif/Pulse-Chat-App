@@ -1,9 +1,10 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { TbSquareToggleHorizontal } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import logo from "../assets/Images/icons8-pulse-32.png";
+import { UserContext } from "../Utils/AuthContext";
 import Chats from "./Chats";
 import ChatsArea from "./ChatsArea";
 import Groups from "./Groups";
@@ -15,6 +16,8 @@ const Messages = () => {
     const [isSearching, setIsSearching] = useState(false); // Search state
     const [searchTerm, setSearchTerm] = useState(""); // Controlled input state
     const [chatReceiverId, setChatRecieverId]=useState(null);
+      
+    const {user}=useContext(UserContext);
 
     const handleTabClick = (tab) => {
         setActiveTab(tab);
@@ -33,7 +36,7 @@ const Messages = () => {
                 setIsSearching(true);
                 try {
                     const res = await axios.get(
-                        `${base}/user/searchUsers?search=${searchTerm.trim()}`,
+                        `${base}/user/searchUsers?search=${searchTerm.trim()}`, 
                         { withCredentials: true }
                     );
                     setSearchUsers(res.data.users);
@@ -48,12 +51,25 @@ const Messages = () => {
         return () => clearTimeout(timeout); // Cleanup debounce
     }, [searchTerm]);
 
-    const handleChat= async(id)=>{
-        console.log(id);
-       const res=await axios.get(`${base}/msg/user/${id}`)
-       console.log(res);
-        setChatRecieverId(id);
-       }
+    const handleChat = async (id) => {
+        console.log('User ID:',user._id);
+        console.log('Receiver ID:', id);
+    
+        try {
+            // Send userId and receiverId as query parameters in the URL
+            const res = await axios.get(`${base}/msg/user`, {
+                params: {
+                    userId: user._id,
+                    receiverId: id,
+                },
+            });
+            console.log(res.data);  // Log the response (messages and user details)
+            setChatRecieverId(id);
+        } catch (error) {
+            console.error('Error fetching chat data:', error);
+        }
+    };
+    
 
     return (
         <div className="flex">
