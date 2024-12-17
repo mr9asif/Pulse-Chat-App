@@ -5,11 +5,15 @@ const sendReaction = require('../Controllers/MessageController/sendReaction');
 const editMessage = require('../Controllers/MessageController/editMessage');
 const deleteMessage = require('../Controllers/MessageController/deleteMessage');
 const getChats = require('../Controllers/MessageController/getChats');
+const getUserMsg = require('../Controllers/MessageController/getUserMsg');
 
 const router = express.Router();
 
 // get all chat users
 router.get('/getchats', authenticateToken, getChats)
+
+// get user and message with id 
+router.get('/user/:id', getUserMsg);
 
 // send message one to one
 router.post('/:id',authenticateToken ,upload,sendMessage);

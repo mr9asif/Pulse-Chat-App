@@ -48,8 +48,10 @@ const Messages = () => {
         return () => clearTimeout(timeout); // Cleanup debounce
     }, [searchTerm]);
 
-    const handleChat=(id)=>{
-        console.log(id)
+    const handleChat= async(id)=>{
+        console.log(id);
+       const res=await axios.get(`${base}/msg/user/${id}`)
+       console.log(res);
         setChatRecieverId(id);
        }
 
