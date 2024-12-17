@@ -1,6 +1,14 @@
+const User = require('../../Models/User.model');
+const Message = require('../../Models/messages.model');
+
 const getUserMsg = async(req, res)=>{
-   const id = req.params.id;
-   console.log("idd", id)
+   const receiverid = req.params.id;
+    
+   const user = await User.findById(receiverid);
+   console.log(user);
+
+
+
 }
 
 module.exports = getUserMsg;
