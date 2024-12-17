@@ -18,6 +18,9 @@ const Messages = () => {
     const [chatReceiverId, setChatRecieverId]=useState(null);
       
     const {user}=useContext(UserContext);
+    const [receiverUser, setreceiverUser]=useState(null);
+    const [messages, setMessages]=useState([]);
+    console.log(receiverUser, messages)
 
     const handleTabClick = (tab) => {
         setActiveTab(tab);
@@ -62,8 +65,12 @@ const Messages = () => {
                     userId: user._id,
                     receiverId: id,
                 },
+                
             });
             console.log(res.data);  // Log the response (messages and user details)
+            setreceiverUser(res.data.user);
+            setMessages(res.data.messages);
+
             setChatRecieverId(id);
         } catch (error) {
             console.error('Error fetching chat data:', error);
@@ -178,11 +185,11 @@ const Messages = () => {
                 <div className="flex items-center w-full justify-start gap-3 px-8 bg-gray-100 h-[80px]">
                     <img
                         className="w-[50px] h-[50px] rounded-[50%]"
-                        src="https://media.istockphoto.com/id/1437816897/photo/business-woman-manager-or-human-resources-portrait-for-career-success-company-we-are-hiring.jpg?s=612x612&w=0&k=20&c=tyLvtzutRh22j9GqSGI33Z4HpIwv9vL_MZw_xOE19NQ="
+                        src={receiverUser?.image}
                         alt=""
                     />
                     <div className="flex flex-col items-start justify-center gap-0">
-                        <h1 className="text-2xl font-mono font-bold text-red-500">Name</h1>
+                        <h1 className="text-2xl font-mono font-bold text-red-500">{receiverUser.fullname}</h1>
                         <p className="text-[13px] text-gray-400 font-mono">Offline</p>
                     </div>
                 </div>
