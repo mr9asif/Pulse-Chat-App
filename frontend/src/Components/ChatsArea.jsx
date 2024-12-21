@@ -1,7 +1,7 @@
 import React from 'react';
 import { LuSend } from "react-icons/lu";
 
-const ChatsArea = () => {
+const ChatsArea = ({messages, receiverUser}) => {
     const isSender = true; // Change this dynamically to simulate sender or receiver
     const isReceiver = true;
     return (
@@ -13,7 +13,7 @@ const ChatsArea = () => {
           {/* Profile Image */}
           <img
               className={`w-[50px] h-[50px] rounded-full ${isSender ? "order-2" : "order-1"}`}
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3WEmfJCME77ZGymWrlJkXRv5bWg9QQmQEzw&s"
+              src={receiverUser?.image}
               alt="Profile"
           />
           

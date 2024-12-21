@@ -189,13 +189,13 @@ const Messages = () => {
                         alt=""
                     />
                     <div className="flex flex-col items-start justify-center gap-0">
-                        <h1 className="text-2xl font-mono font-bold text-red-500">{receiverUser.fullname}</h1>
+                        <h1 className="text-2xl font-mono font-bold text-red-500">{receiverUser?.fullname}</h1>
                         <p className="text-[13px] text-gray-400 font-mono">Offline</p>
                     </div>
                 </div>
 
                 {/* Chats area */}
-                <ChatsArea chatReceiverId={chatReceiverId} className=""></ChatsArea>
+                <ChatsArea chatReceiverId={chatReceiverId} messages={messages} receiverUser={receiverUser} className=""></ChatsArea>
             </div>
         </div>
     );
