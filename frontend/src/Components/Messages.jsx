@@ -16,6 +16,7 @@ const Messages = () => {
     const [isSearching, setIsSearching] = useState(false); // Search state
     const [searchTerm, setSearchTerm] = useState(""); // Controlled input state
     const [chatReceiverId, setChatRecieverId]=useState(null);
+    const [select, setSelect]=useState(null)
       
     const {user}=useContext(UserContext);
     const [receiverUser, setreceiverUser]=useState(null);
@@ -56,6 +57,7 @@ const Messages = () => {
 
     const handleChat = async (id) => {
         console.log('User ID:',user._id);
+        setSelect(id);
         console.log('Receiver ID:', id);
     
         try {
@@ -182,7 +184,8 @@ const Messages = () => {
             {/* Right side */}
             <div className="w-[70%] h-[100vh] bg-green-600">
                 {/* Top */}
-                <div className="flex items-center w-full justify-start gap-3 px-8 bg-gray-100 h-[80px]">
+              
+                   <div className="flex items-center w-full justify-start gap-3 px-8 bg-gray-100 h-[80px]">
                     <img
                         className="w-[50px] h-[50px] rounded-[50%]"
                         src={receiverUser?.image}
@@ -193,9 +196,13 @@ const Messages = () => {
                         <p className="text-[13px] text-gray-400 font-mono">Offline</p>
                     </div>
                 </div>
+                 
+               
 
                 {/* Chats area */}
-                <ChatsArea chatReceiverId={chatReceiverId} messages={messages} receiverUser={receiverUser} className=""></ChatsArea>
+                 {
+                     select ? <ChatsArea chatReceiverId={chatReceiverId} messages={messages} receiverUser={receiverUser} className=""></ChatsArea> : <><div className="text-center mt-[260px] my-auto">Select Someone to Chat</div></>
+                 }
             </div>
         </div>
     );
