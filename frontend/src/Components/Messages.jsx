@@ -4,6 +4,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import { TbSquareToggleHorizontal } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import logo from "../assets/Images/icons8-pulse-32.png";
+import socket from '../Socket/socket';
 import { UserContext } from "../Utils/AuthContext";
 import Chats from "./Chats";
 import ChatsArea from "./ChatsArea";
@@ -22,10 +23,17 @@ const Messages = () => {
     const [receiverUser, setreceiverUser]=useState(null);
     const [messages, setMessages]=useState([]);
     console.log(receiverUser, messages)
+    
 
     const handleTabClick = (tab) => {
         setActiveTab(tab);
     };
+
+    useEffect(()=>{
+        socket.on('connect', ()=>{
+            console.log("socket connect")
+        })
+    },[])
 
     // Debounced search
     useEffect(() => {
