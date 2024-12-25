@@ -75,7 +75,7 @@ const Register = () => {
     
     
         try {
-          const res = await axios.post(`${base}/user/register`, formData);
+          const res = await axios.post(`${base}/user/register`, formData, {withCredentials:true});
           console.log("Registration successful", res.data);
           toast.success('Successfully Registered!');
           navigate('/');

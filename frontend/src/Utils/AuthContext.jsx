@@ -12,6 +12,7 @@ const AuthContext = ({ children }) => {
         const fetchUser = async () => {
             try {
                 const res = await axios.get(`${base}/user/getUser`, { withCredentials: true });
+                console.log(res)
                 setUser(res.data); // Assuming your API returns user data in `res.data`
                 setLoading(false);
             } catch (error) {

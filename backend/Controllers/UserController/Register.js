@@ -5,7 +5,7 @@ const generateToken = require("../../Utils/JwtToken");
 
 const RegisterUser =async (req, res)=>{
    try {
-    const {fullname, username, email, password}= req.body;
+    const {fullname, username, email, password, image}= req.body;
 
     // check fields
     if(!fullname || !username || !email || !password){
@@ -23,7 +23,7 @@ const RegisterUser =async (req, res)=>{
     const hashPass = await hash(password, salt);
 
     const newUser = new User({
-        fullname, username, email, password:hashPass
+        fullname, username, email, password:hashPass, image
     });
       
     // save user in database

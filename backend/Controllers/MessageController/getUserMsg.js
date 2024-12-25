@@ -4,9 +4,13 @@ const Message = require('../../Models/messages.model');
 const getUserMsg = async(req, res)=>{
     try {
       const { userId, receiverId } = req.query;
-   console.log(userId , receiverId)
+   console.log("u",userId ,"r", receiverId)
+   console.log("object")
     
       const user = await User.findById(receiverId);
+      if (!user || !receiverId) {
+         return res.status(404).json({ message: 'User or Receiver not found' });
+     }
 
       const messages = await Message.find({
          $or: [
@@ -14,16 +18,13 @@ const getUserMsg = async(req, res)=>{
              { sender: receiverId, receiver: userId }
          ]
      })
-      console.log(user)
+      // console.log(user)
       console.log(messages)
-      res.status(201).send({user: user, messages: messages})
+      return res.status(201).send({user: user, messages: messages})
 
-      if (!user || !receiverId) {
-         return res.status(404).json({ message: 'User or Receiver not found' });
-     }
     } catch (error) {
       console.error('Error fetching data:', error);
-      res.status(500).json({ message: 'Internal server error' });
+      return res.status(500).json({ message: 'Internal server error' });
     }
    
 

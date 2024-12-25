@@ -1,37 +1,44 @@
 const Message = require('../../Models/messages.model');
 const User = require('../../Models/User.model');
-const {ObjectId}=require('mongodb');
+const { ObjectId } = require('mongodb');
 
 const getChats = async (req, res) => {
     try {
-        const { user } = req;
+        const { user } = req; // Extract the logged-in user
         console.log(user); // Log user object for debugging
-        const senderId = user.id;
+        console.log("Fetching chats...");
 
-        // Fetch messages where the sender matches the current user
-        const chatMsg = await Message.find({ sender: senderId });
+        const userId = user.id; // Current user's ID
 
-        // Extract unique receiver IDs from the fetched messages
-        const receiverIds = [...new Set(chatMsg.map((msg) => msg.receiver))];
-        console.log(receiverIds); // Log receiver IDs for debugging
+        // Fetch all messages where the user is either the sender or the receiver
+        const chatMsg = await Message.find({
+            $or: [
+                { sender: userId },
+                { receiver: userId }
+            ]
+        });
 
-        // Step 1: Remove duplicates
-        const uniqueReceiverIds = [...new Set(receiverIds.map(id => id.toString()))]
-            .map(id => new ObjectId(id)); // Convert back to ObjectId
+        // Extract unique participants (both senders and receivers)
+        const participantIds = [...new Set(
+            chatMsg.flatMap(msg => [msg.sender, msg.receiver]) // Combine sender and receiver IDs
+        )].filter(id => id.toString() !== userId); // Exclude the current user's ID
 
-        // Step 2: Query User collection
-        const users = await User.find({ _id: { $in: uniqueReceiverIds } })
-          
-            .lean(); // Return plain JS objects for easier manipulation
+        console.log("Participant IDs:", participantIds);
 
-        // Step 3: Return user details
+        // Convert IDs to ObjectId for querying
+        const uniqueParticipantIds = participantIds.map(id => new ObjectId(id));
+
+        // Fetch user details for all participants
+        const users = await User.find({ _id: { $in: uniqueParticipantIds } }).lean();
+
+        console.log("Chat participants:", users);
+
+        // Return the list of users
         res.status(200).json({ users });
 
-        // Respond with the fetched messages
-        // res.status(200).json({ receiverIds, messages: chatMsg });
     } catch (error) {
         console.error("Error in getChats:", error); // Log error for debugging
-        res.status(500).json({ message: "Server error", error });
+        return res.status(500).json({ message: "Server error", error });
     }
 };
 
