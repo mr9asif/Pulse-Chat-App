@@ -1,13 +1,15 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { SocketContext } from '../Socket/SocketContext';
 
 const Chats = ({handleChat}) => {
   const [chats, setChats] = useState([]);
   const [loading, setLoadin]=useState(true);
   const base = import.meta.env.VITE_BASEURL;
-
+  const {onlineUsers}= useContext(SocketContext);
+      console.log(onlineUsers)
  
 
   useEffect(() => {
@@ -31,7 +33,7 @@ const Chats = ({handleChat}) => {
 
   return (
     <div className=''>
-      {chats?.map((chat) => (
+      {onlineUsers?.map((chat) => (
         <div onClick={()=>handleChat(chat._id)}
           className='flex items-start mb-2 justify-start cursor-pointer pl-10 rounded-md py-2 gap-6 bg-gray-200'
           key={chat.id} // Always include a unique key prop

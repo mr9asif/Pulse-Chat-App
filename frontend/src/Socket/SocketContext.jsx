@@ -10,14 +10,13 @@ export const SocketContextProvider = ({ children }) => {
 	const [socket, setSocket] = useState(null);
 	const [onlineUsers, setOnlineUsers] = useState([]);
 	const { user } = useContext(UserContext);
-	// console.log(user)
-	// const userId=user.fullname;
+	
 	
 
 
 	useEffect(() => {
 		if (user) {
-			console.log("user id", user._id)
+			console.log("user id", user.id)
 			const socket = io("http://localhost:4000", {
 				query: {
 					userId: user._id,
