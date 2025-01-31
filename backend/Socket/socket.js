@@ -11,11 +11,16 @@ const io = new Server(server, {
     }
 });
 
+// sdlklkdf
+// dfdff
+// dfffffff
+
 const userOnlineMap = {};
 io.on('connection', (socket) => {
     console.log("User connected", socket.id);
 
     const {userId} = socket.handshake.query;
+    console.log("userid", userId)
     // console.log("userId", userId)
     // if (userId !== "undefined") userOnlineMap[userId] = socket.id;
     //   console.log(Object.keys(userOnlineMap))

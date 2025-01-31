@@ -15,7 +15,7 @@ const forgetPassword = async(req, res)=>{
 
       user.resetPasswordToken = resetToken;
       user.resetPasswordExpiry = resetTokenExp;
-
+      
       await user.save();
 
       const resetURL = `http://localhost:4000/reset-password/${resetToken}`;
