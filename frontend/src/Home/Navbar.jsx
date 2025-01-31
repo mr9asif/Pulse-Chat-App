@@ -9,6 +9,7 @@ const Navbar = () => {
      const {user, setUser} = useContext(UserContext);
      const navigate = useNavigate();
      console.log(user)
+     console.log("userid", user._id)
     
     console.log(user?.image)
       
