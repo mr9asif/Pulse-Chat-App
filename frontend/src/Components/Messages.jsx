@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
+import { BsFillPeopleFill } from "react-icons/bs";
 import { FaArrowLeft } from "react-icons/fa";
 import { TbSquareToggleHorizontal } from "react-icons/tb";
 import { Link } from "react-router-dom";
@@ -106,6 +107,9 @@ const Messages = () => {
                         </Link>
                     </div>
 
+                    <div title="Online Users" className="text-2xl text-white cursor-pointer">
+                    <BsFillPeopleFill />
+                </div>
                     <div title="Theme" className="text-2xl text-white cursor-pointer">
                         <TbSquareToggleHorizontal />
                     </div>
