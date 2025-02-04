@@ -121,7 +121,7 @@ return (
                 <div 
                     onClick={handleOnlineUsers} 
                     title="Online Users" 
-                    className={`text-2xl text-white cursor-pointer ${toggle ? "bg-green-500" : ""}`}
+                    className={`text-2xl text-white cursor-pointer ${toggle ? " text-green-500" : ""}`}
                 >
                     <BsFillPeopleFill />
                 </div>
@@ -184,6 +184,7 @@ return (
                             <h1 className="text-white mb-2">Online Users</h1>
                             {online && online.map((user) => (
                                 <div
+                                 onClick={()=>handleChat(user._id)}
                                     key={user._id}
                                     className="flex items-center gap-3 mb-4 p-4 bg-gray-200 rounded-lg"
                                 >
