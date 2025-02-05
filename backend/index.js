@@ -14,26 +14,7 @@ const ReviewsRoutes = require('./Routes/ReviewsRoutes');
 
 
 
-// skdlfdkfldf
-// dfkdllfd
-// jkkjk
-// jkjkkjkjkk
-// kkkkkkkkkkkkkkkkk
-// skdlfdkfldf
-// dfkdllfd
-// jkkjk
-// jkjkkjkjkk
-// kkkkkkkkkkkkkkkkk
-// skdlfdkfldf
-// dfkdllfd
-// jkkjk
-// jkjkkjkjkk
-// kkkkkkkkkkkkkkkkk
-// skdlfdkfldf
-// dfkdllfd
-// jkkjk
-// jkjkkjkjkk
-// kkkkkkkkkkkkkkkkk
+
 
 
 // middleware
