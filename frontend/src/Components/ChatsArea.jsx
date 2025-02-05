@@ -33,6 +33,11 @@ const ChatsArea = ({ messages, receiverUser }) => {
             return messageDate.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
         };
 
+        const handleSubmit = (e)=>{
+            e.preventDefault();
+            const msg = e.target.value;
+        }
+
         // Group messages by category
         const groupedMessages = messages.reduce((groups, msg) => {
             const category = getCategory(msg.timestamp);
@@ -111,8 +116,9 @@ const ChatsArea = ({ messages, receiverUser }) => {
 
             {/* Message Input */}
             <div className="bg-white p-1">
-                <form className="flex items-center justify-center gap-1">
+                <form onSubmit={handleSubmit} className="flex items-center justify-center gap-1">
                     <input
+                       
                         type="text"
                         placeholder="Send a message..."
                         className="w-[80%] p-3 rounded-sm outline-none bg-gray-300 text-gray-800 font-mono"
