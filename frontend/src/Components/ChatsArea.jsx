@@ -1,22 +1,57 @@
 import axios from 'axios';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { LuSend } from "react-icons/lu";
+import { io } from "socket.io-client";
 import { UserContext } from '../Utils/AuthContext';
 
 const ChatsArea = ({ messages, receiverUser }) => {
     const { user } = useContext(UserContext);
     const [newMessage, setNewMessage]=useState('');
     const base = import.meta.env.VITE_BASEURL;
+    const [socket, setSocket] = useState(null);
+    const [chatMessages, setChatMessages] = useState(messages || []);
 
-    const handleSubmit=async(e)=>{
-        e.preventDefault();
-        console.log(newMessage)
-        console.log(receiverUser._id)
-        console.log(user)
 
-        const res= await axios.post(`${base}/msg/${receiverUser._id}`, {text:newMessage},  { withCredentials: true })
-        console.log(res)
-     }
+        // Connect to socket when component mounts
+        useEffect(() => {
+            const newSocket = io(base);
+            setSocket(newSocket);
+    
+            // Listen for new messages
+            newSocket.on("receiveMessage", (message) => {
+                setChatMessages((prev) => [...prev, message]);
+            });
+    
+            return () => newSocket.disconnect();
+        }, [base]);
+
+        const handleSubmit = async (e) => {
+            e.preventDefault();
+    
+            if (!newMessage.trim()) return;
+    
+            const messageData = {
+                sender: user._id,
+                receiver: receiverUser._id,
+                text: newMessage,
+            };
+    
+            // Send to server via API
+            try {
+                await axios.post(`${base}/msg/${receiverUser._id}`, messageData, {
+                   
+                    withCredentials: true,
+                });
+    
+                // Send message via Socket.IO
+                socket.emit("sendMessage", messageData);
+    
+                setChatMessages([...chatMessages, messageData]); // Update UI instantly
+                setNewMessage('');
+            } catch (error) {
+                console.error("Error sending message:", error.response?.data || error.message);
+            }
+        };
 
     // Function to format and categorize timestamps
     const processMessages = (messages) => {

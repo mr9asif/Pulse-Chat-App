@@ -23,6 +23,12 @@ io.on("connection", async (socket) => {
     const { userId } = socket.handshake.query;
     console.log("UserID:", userId);
 
+
+    // Listen for messages
+    socket.on("sendMessage", ({ senderId, receiverId, text }) => {
+        io.to(receiverId).emit("receiveMessage", { sender, text });
+    });
+
     if (userId) {
         if (!userOnlineMap[userId]) {
             userOnlineMap[userId] = [];
