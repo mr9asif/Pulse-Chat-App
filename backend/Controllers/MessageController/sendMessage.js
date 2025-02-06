@@ -41,11 +41,11 @@ const sendMessage = async(req, res)=>{
     const media = req.file? req.file.filename : null;
 
     if(!senderId &&  !receiverId){
-        res.json({message:"sender or reciver not found"})
+        return res.json({message:"sender or reciver not found"})
     }
 
     if(!text  && !media){
-        res.status(400).json({message:"Content not found to send"})
+        return res.status(400).json({message:"Content not found to send"})
     }
 
     const message = new Message({
