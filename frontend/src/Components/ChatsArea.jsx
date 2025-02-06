@@ -1,9 +1,22 @@
-import React, { useContext } from 'react';
+import axios from 'axios';
+import React, { useContext, useState } from 'react';
 import { LuSend } from "react-icons/lu";
 import { UserContext } from '../Utils/AuthContext';
 
 const ChatsArea = ({ messages, receiverUser }) => {
     const { user } = useContext(UserContext);
+    const [newMessage, setNewMessage]=useState('');
+    const base = import.meta.env.VITE_BASEURL;
+
+    const handleSubmit=async(e)=>{
+        e.preventDefault();
+        console.log(newMessage)
+        console.log(receiverUser._id)
+        console.log(user)
+
+        const res= await axios.post(`${base}/msg/${receiverUser._id}`, {text:newMessage},  { withCredentials: true })
+        console.log(res)
+     }
 
     // Function to format and categorize timestamps
     const processMessages = (messages) => {
@@ -33,10 +46,7 @@ const ChatsArea = ({ messages, receiverUser }) => {
             return messageDate.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
         };
 
-        const handleSubmit = (e)=>{
-            e.preventDefault();
-            const msg = e.target.value;
-        }
+    
 
         // Group messages by category
         const groupedMessages = messages.reduce((groups, msg) => {
@@ -118,6 +128,8 @@ const ChatsArea = ({ messages, receiverUser }) => {
             <div className="bg-white p-1">
                 <form onSubmit={handleSubmit} className="flex items-center justify-center gap-1">
                     <input
+                    value={newMessage}
+                    onChange={(e)=>setNewMessage(e.target.value)}
                        
                         type="text"
                         placeholder="Send a message..."
