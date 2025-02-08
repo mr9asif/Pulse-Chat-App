@@ -5,7 +5,7 @@ const getUserMsg = async(req, res)=>{
     try {
       const { userId, receiverId } = req.query;
    console.log("u",userId ,"r", receiverId)
-   console.log("object")
+  //  console.log("object")
     
       const user = await User.findById(receiverId);
       if (!user || !receiverId) {
@@ -19,7 +19,7 @@ const getUserMsg = async(req, res)=>{
          ]
      })
       // console.log(user)
-      console.log(messages)
+      // console.log(messages)
       return res.status(201).send({user: user, messages: messages})
 
     } catch (error) {

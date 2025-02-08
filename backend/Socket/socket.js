@@ -21,13 +21,50 @@ io.on("connection", async (socket) => {
     console.log("User connected", socket.id);
 
     const { userId } = socket.handshake.query;
-    console.log("UserID:", userId);
+    if (userId) {
+        if (!userOnlineMap[userId]) {
+            userOnlineMap[userId] = [];
+        }
+        userOnlineMap[userId].push(socket.id); // Store socket ID under user ID
+
+        console.log("Updated Online Users:", userOnlineMap);
+    }
+
+    // socket.on('sendMessage', (msg)=>{
+    //     console.log(msg)
+    // })
+    
+      
+    
+
+    // Listen for a new message
+  // Listen for a new message
+socket.on("sendMessage", (message) => {
+    const { sender, receiver } = message;
+
+    // Find the socket IDs for the sender and receiver using their userId
+    const senderSocketIds = userOnlineMap[sender]; // Get sender's socket IDs
+    const receiverSocketIds = userOnlineMap[receiver]; // Get receiver's socket IDs
+ console.log("sender:", senderSocketIds);
+ console.log("reci:", receiverSocketIds);
+    // Emit the message to the sender's socket(s)
+    if (senderSocketIds) {
+        senderSocketIds.forEach((socketId) => {
+            io.to(socketId).emit("receiveMessage", message);
+        });
+    }
+
+    // Emit the message to the receiver's socket(s)
+    if (receiverSocketIds) {
+        receiverSocketIds.forEach((socketId) => {
+            io.to(socketId).emit("receiveMessage", message);
+        });
+    }
+
+    console.log("Message sent:", message);
+});
 
 
-    // Listen for messages
-    socket.on("sendMessage", ({ senderId, receiverId, text }) => {
-        io.to(receiverId).emit("receiveMessage", { sender, text });
-    });
 
     if (userId) {
         if (!userOnlineMap[userId]) {
@@ -35,7 +72,7 @@ io.on("connection", async (socket) => {
         }
         userOnlineMap[userId].push(socket.id); // Store multiple connections for the same user
 
-        console.log("Online Users:", Object.keys(userOnlineMap));
+        // console.log("Online Users:", Object.keys(userOnlineMap));
 
         // Fetch user details and emit updated online users list
         await sendOnlineUsers();
@@ -68,21 +105,24 @@ async function sendOnlineUsers() {
     try {
         const userIds = Object.keys(userOnlineMap); // Get array of user IDs from the map
 
-        // Convert string IDs to ObjectId type correctly using 'new'
-        const objectIds = userIds.map(id => new mongoose.Types.ObjectId(id));
+        // Filter out invalid userIds before converting them to ObjectId
+        const validUserIds = userIds.filter(id => mongoose.Types.ObjectId.isValid(id));
+
+        // Convert valid userIds to ObjectId
+        const objectIds = validUserIds.map(id => new mongoose.Types.ObjectId(id));
 
         // Fetch user details from the database using .lean() for plain JavaScript objects
         const users = await User.find({ _id: { $in: objectIds } })
             .select("fullname username image email") // Select specific fields
             .lean(); // Use lean() to get plain JavaScript objects
 
-        // Emit the full user details
-        console.log(users)
+        // Emit the full user details to all connected clients
         io.emit("onlineUsers", users);
     } catch (error) {
         console.error("Error fetching online users:", error);
     }
 }
+
 
 
 module.exports = { server, io, app };

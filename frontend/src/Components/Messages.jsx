@@ -26,9 +26,9 @@ const Messages = () => {
     const [messages, setMessages]=useState([]);
     const [toggle, setToggle]=useState(false);
     // console.log(receiverUser, messages)
-    console.log(user)
+    // console.log(user)
     const [online, setOnline]=useState(null);
-    console.log(online)
+    // console.log(online)
 
     const {onlineUsers}= useContext(SocketContext);
       
@@ -37,7 +37,7 @@ const Messages = () => {
     };
     
 
-  
+//   console.log(receiverUser)
     
 
     // Debounced search
@@ -72,12 +72,12 @@ const Messages = () => {
         setToggle(!toggle);
           setOnline(onlineUsers)
     }
-    console.log(toggle)
+    // console.log(toggle)
 
     const handleChat = async (id) => {
         console.log('User ID:',user._id);
         setSelect(id);
-        console.log('Receiver ID:', id);
+        // console.log('Receiver ID:', id);
     
         try {
             // Send userId and receiverId as query parameters in the URL
@@ -248,6 +248,7 @@ return (
                 <ChatsArea
                     chatReceiverId={chatReceiverId}
                     messages={messages}
+                    setMessages={setMessages}
                     receiverUser={receiverUser}
                 />
             ) : (

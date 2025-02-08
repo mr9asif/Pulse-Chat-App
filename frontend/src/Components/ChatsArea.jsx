@@ -1,29 +1,48 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { LuSend } from "react-icons/lu";
-import { io } from "socket.io-client";
+import { io } from 'socket.io-client';
 import { UserContext } from '../Utils/AuthContext';
 
-const ChatsArea = ({ messages, receiverUser }) => {
+const ChatsArea = ({ messages, setMessages, receiverUser }) => {
     const { user } = useContext(UserContext);
     const [newMessage, setNewMessage]=useState('');
     const base = import.meta.env.VITE_BASEURL;
+    // const [socket, setSocket]=useState([]);
     const [socket, setSocket] = useState(null);
-    const [chatMessages, setChatMessages] = useState(messages || []);
+    const [socketId, setSocketId]=useState(null);
+ console.log(messages)
+            
+ useEffect(() => {
+    if (!user || !receiverUser) return;
+
+    const newSocket = io("http://localhost:4000", {
+        query: { userId: user._id },
+    });
+
+    setSocket(newSocket);
+
+    newSocket.on("connect", () => {
+        console.log("Connected:", newSocket.id);
+        setSocketId(newSocket.id);
+    });
+
+    // 🔥 Ensure that multiple listeners are NOT attached
+    const messageListener = (message) => {
+        console.log("New message received:", message);
+        setMessages((prevMessages) => [...prevMessages, message]);
+    };
+
+    newSocket.on("receiveMessage", messageListener);
+
+    // Cleanup previous listeners when component re-renders
+    return () => {
+        newSocket.off("receiveMessage", messageListener);
+        newSocket.disconnect();
+    };
+}, [user, receiverUser]);
 
 
-        // Connect to socket when component mounts
-        useEffect(() => {
-            const newSocket = io(base);
-            setSocket(newSocket);
-    
-            // Listen for new messages
-            newSocket.on("receiveMessage", (message) => {
-                setChatMessages((prev) => [...prev, message]);
-            });
-    
-            return () => newSocket.disconnect();
-        }, [base]);
 
         const handleSubmit = async (e) => {
             e.preventDefault();
@@ -32,8 +51,10 @@ const ChatsArea = ({ messages, receiverUser }) => {
     
             const messageData = {
                 sender: user._id,
+
                 receiver: receiverUser._id,
                 text: newMessage,
+                socketId:socketId
             };
     
             // Send to server via API
@@ -43,11 +64,14 @@ const ChatsArea = ({ messages, receiverUser }) => {
                     withCredentials: true,
                 });
     
-                // Send message via Socket.IO
-                socket.emit("sendMessage", messageData);
-    
-                setChatMessages([...chatMessages, messageData]); // Update UI instantly
-                setNewMessage('');
+             // Emit message via Socket.IO
+            // const roomId = [user._id, receiverUser._id].sort().join("-");
+            socket.emit("sendMessage", messageData );
+            
+
+            // Update UI instantly
+            setMessages((prevMessages) => [...prevMessages, messageData]);
+            setNewMessage('');
             } catch (error) {
                 console.error("Error sending message:", error.response?.data || error.message);
             }
