@@ -27,20 +27,20 @@ const ChatsArea = ({ messages, setMessages, receiverUser }) => {
         setSocketId(newSocket.id);
     });
 
-    // 🔥 Ensure that multiple listeners are NOT attached
+    // 🔥 Update messages when received
     const messageListener = (message) => {
         console.log("New message received:", message);
-        setMessages((prevMessages) => [...prevMessages, message]);
+        setMessages((prevMessages) => [...prevMessages, { ...message, timestamp: message.timestamp || new Date().toISOString() }]);
     };
 
     newSocket.on("receiveMessage", messageListener);
 
-    // Cleanup previous listeners when component re-renders
     return () => {
         newSocket.off("receiveMessage", messageListener);
         newSocket.disconnect();
     };
 }, [user, receiverUser]);
+
 
 
 
@@ -54,7 +54,8 @@ const ChatsArea = ({ messages, setMessages, receiverUser }) => {
 
                 receiver: receiverUser._id,
                 text: newMessage,
-                socketId:socketId
+                socketId:socketId,
+               timestamp: new Date().toISOString(),
             };
     
             // Send to server via API
