@@ -37,14 +37,14 @@ const sendMessage = async(req, res)=>{
     const senderId = user.id;
     console.log(senderId, receiverId);
 
-    const {text} = req.body;
+    const {content} = req.body;
     const media = req.file? req.file.filename : null;
 
     if(!senderId &&  !receiverId){
         return res.json({message:"sender or reciver not found"})
     }
 
-    if(!text  && !media){
+    if(!content  && !media){
         return res.status(400).json({message:"Content not found to send"})
     }
 
@@ -52,7 +52,7 @@ const sendMessage = async(req, res)=>{
         
             sender:senderId,
             receiver:new mongoose.Types.ObjectId(receiverId),
-            content:text,
+            content:content,
            
             media:media,
             timestamp: new Date(),

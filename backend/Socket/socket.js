@@ -1,100 +1,71 @@
 const express = require("express");
 const http = require("http");
 const mongoose = require("mongoose");
-const User = require("../Models/User.model"); // Adjust path based on your project structure
+const User = require("../Models/User.model");
 
 const app = express();
 const { Server } = require("socket.io");
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: ["http://localhost:5173", "http://localhost:5174"],
+        origin: ["http://localhost:5173", "http://localhost:5175"],
         methods: ["GET", "POST"],
     },
 });
 
-
-
-const userOnlineMap = {}; // Store online users
+const userOnlineMap = {}; // Store online users (only one socket per user)
 
 io.on("connection", async (socket) => {
-    console.log("User connected", socket.id);
+    console.log("User connected:", socket.id);
 
     const { userId } = socket.handshake.query;
-    if (userId) {
-        if (!userOnlineMap[userId]) {
-            userOnlineMap[userId] = [];
-        }
-        userOnlineMap[userId].push(socket.id); // Store socket ID under user ID
 
-        console.log("Updated Online Users:", userOnlineMap);
+    if (userId && userId !== "undefined") {
+        userOnlineMap[userId] = socket.id; // Store only the latest socket ID
     }
 
-    // socket.on('sendMessage', (msg)=>{
-    //     console.log(msg)
-    // })
+     const receiveid ="6766cf19ad1438890b74450d";
+    //  console.log("f",userOnlineMap[receiveid])3
     
-      
-    
-
-    // Listen for a new message
-  // Listen for a new message
-socket.on("sendMessage", (message) => {
-    const { sender, receiver } = message;
-
-    // Find the socket IDs for the sender and receiver using their userId
-    const senderSocketIds = userOnlineMap[sender]; // Get sender's socket IDs
-    const receiverSocketIds = userOnlineMap[receiver]; // Get receiver's socket IDs
- console.log("sender:", senderSocketIds);
- console.log("reci:", receiverSocketIds);
-    // Emit the message to the sender's socket(s)
-    if (senderSocketIds) {
-        senderSocketIds.forEach((socketId) => {
-            io.to(socketId).emit("receiveMessage", message);
-        });
-    }
-
-    // Emit the message to the receiver's socket(s)
-    if (receiverSocketIds) {
-        receiverSocketIds.forEach((socketId) => {
-            io.to(socketId).emit("receiveMessage", message);
-        });
-    }
-
-    console.log("Message sent:", message);
-});
+    console.log("Updated Online Users:", userOnlineMap); // ✅ Now prints the actual online users
+    await sendOnlineUsers();
 
 
 
-    if (userId) {
-        if (!userOnlineMap[userId]) {
-            userOnlineMap[userId] = [];
+      // **Listen for "sendMessage" event and forward it to the receiver**
+      socket.on("sendMessage", ({ sender, receiver, content }) => {
+        console.log("rec", receiver)
+        console.log(`Message from ${sender} to ${receiver}:`, content);
+        
+        const receiverSocketId = userOnlineMap[receiver];
+        console.log(receiverSocketId)
+
+        console.log("rc", receiverSocketId)
+
+        if (receiverSocketId) {
+            io.to(receiverSocketId).emit("receiveMessage", {
+                sender,
+                content,
+            });
+            console.log(`Message sent to ${receiver} (socket: ${receiverSocketId})`);
+        } else {
+            console.log(`User ${receiver} is offline. Message not delivered.`);
         }
-        userOnlineMap[userId].push(socket.id); // Store multiple connections for the same user
+    });
 
-        // console.log("Online Users:", Object.keys(userOnlineMap));
 
-        // Fetch user details and emit updated online users list
-        await sendOnlineUsers();
-    }
+
+
 
     socket.on("disconnect", async () => {
-        console.log("User disconnected", socket.id);
+        console.log("User disconnected:", socket.id);
 
-        if (userId && userOnlineMap[userId]) {
-            // Remove the socket ID from the array
-            userOnlineMap[userId] = userOnlineMap[userId].filter((id) => id !== socket.id);
-
-            // If no sockets are left for this userId, remove the userId from the map
-            if (userOnlineMap[userId].length === 0) {
-                delete userOnlineMap[userId];
-            }
-
-            console.log("Updated userOnlineMap after disconnect:", userOnlineMap);
-
-            // Fetch user details and emit updated online users list
-            await sendOnlineUsers();
+        if (userId && userOnlineMap[userId] === socket.id) {
+            delete userOnlineMap[userId]; // Remove user if they disconnect
         }
+
+        console.log("Updated userOnlineMap after disconnect:", Object.keys(userOnlineMap)); // ✅ Updated after user disconnects
+        await sendOnlineUsers();
     });
 });
 
@@ -103,26 +74,20 @@ socket.on("sendMessage", (message) => {
  */
 async function sendOnlineUsers() {
     try {
-        const userIds = Object.keys(userOnlineMap); // Get array of user IDs from the map
+        const userIds = Object.keys(userOnlineMap).filter(id => mongoose.Types.ObjectId.isValid(id));
+        
+        console.log("now online: ", userIds); // ✅ Now prints online users every time it's called
 
-        // Filter out invalid userIds before converting them to ObjectId
-        const validUserIds = userIds.filter(id => mongoose.Types.ObjectId.isValid(id));
+        if (userIds.length === 0) return;
 
-        // Convert valid userIds to ObjectId
-        const objectIds = validUserIds.map(id => new mongoose.Types.ObjectId(id));
+        const users = await User.find({ _id: { $in: userIds } })
+            .select("fullname username image email")
+            .lean();
 
-        // Fetch user details from the database using .lean() for plain JavaScript objects
-        const users = await User.find({ _id: { $in: objectIds } })
-            .select("fullname username image email") // Select specific fields
-            .lean(); // Use lean() to get plain JavaScript objects
-
-        // Emit the full user details to all connected clients
         io.emit("onlineUsers", users);
     } catch (error) {
         console.error("Error fetching online users:", error);
     }
 }
-
-
 
 module.exports = { server, io, app };

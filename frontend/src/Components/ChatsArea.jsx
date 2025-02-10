@@ -38,6 +38,7 @@ const ChatsArea = ({ messages, setMessages, receiverUser }) => {
     return () => {
         newSocket.off("receiveMessage", messageListener);
         newSocket.disconnect();
+        setSocket(null)
     };
 }, [user, receiverUser]);
 
@@ -53,7 +54,7 @@ const ChatsArea = ({ messages, setMessages, receiverUser }) => {
                 sender: user._id,
 
                 receiver: receiverUser._id,
-                text: newMessage,
+                content: newMessage,
                 socketId:socketId,
                timestamp: new Date().toISOString(),
             };
