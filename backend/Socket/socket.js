@@ -33,7 +33,7 @@ io.on("connection", async (socket) => {
 
 
       // **Listen for "sendMessage" event and forward it to the receiver**
-      socket.on("sendMessage", ({ sender, receiver, content }) => {
+      socket.on("sendMessage", ({ sender, receiver, content, media }) => {
         console.log("rec", receiver)
         console.log(`Message from ${sender} to ${receiver}:`, content);
         
@@ -46,6 +46,7 @@ io.on("connection", async (socket) => {
             io.to(receiverSocketId).emit("receiveMessage", {
                 sender,
                 content,
+                media
             });
             console.log(`Message sent to ${receiver} (socket: ${receiverSocketId})`);
         } else {
