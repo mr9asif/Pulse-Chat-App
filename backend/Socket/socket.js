@@ -92,7 +92,3 @@ async function sendOnlineUsers() {
 }
 
 module.exports = { server, io, app };
-// kkkkkkkkkkkkkks
-// dfldkfdlfkl
-// dfldkfdlfk
-// d,fdfdlfkdlfk
